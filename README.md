@@ -1,5 +1,10 @@
 # SuperRecursiveOpenStruct
 
+[![Build Status](https://travis-ci.org/infertux/super_recursive_open_struct.svg)](https://travis-ci.org/infertux/super_recursive_open_struct)
+[![Dependency Status](http://img.shields.io/gemnasium/infertux/super_recursive_open_struct.svg)](https://gemnasium.com/infertux/super_recursive_open_struct)
+[![Code Climate](http://img.shields.io/codeclimate/github/infertux/super_recursive_open_struct.svg)](https://codeclimate.com/github/infertux/super_recursive_open_struct)
+[![Gem Version](http://img.shields.io/gem/v/super_recursive_open_struct.svg)](https://rubygems.org/gems/super_recursive_open_struct)
+
 `SuperRecursiveOpenStruct` is similar to `RecursiveOpenStruct` but with these two differences:
 
 - it supports arrays (either at the top level or nested within a hash)
