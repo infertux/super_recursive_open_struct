@@ -1,31 +1,27 @@
 # SuperRecursiveOpenStruct
 
-TODO: Write a gem description
+`SuperRecursiveOpenStruct` is similar to `RecursiveOpenStruct` but with these two differences:
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'super_recursive_open_struct'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install super_recursive_open_struct
+- it supports arrays (either at the top level or nested within a hash)
+- it raises `NoMethodError` instead of returning `nil` when accessing an undefined hash key (can be disabled by passing `raise_on_missing_methods: false` to `#initialize`)
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require "super_recursive_open_struct"
 
-## Contributing
+sros = SuperRecursiveOpenStruct.new(a: {b: 1})
+sros.a.b #=> 1
+sros.z #=> NoMethodError: undefined method `z' for #<SuperRecursiveOpenStruct:0x489e1e0 a={:b=>1}>
 
-1. Fork it ( https://github.com/[my-github-username]/super_recursive_open_struct/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+sros_with_array = SuperRecursiveOpenStruct.new(a: [1, 2, 3])
+sros_with_array.a #=> [1, 2, 3]
+sros_with_array.a.last #=> 3
+
+SuperRecursiveOpenStruct.new({a: 1}, raise_on_missing_methods: false).z #=> nil
+```
+
+## License
+
+MIT
+
