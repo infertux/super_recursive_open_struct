@@ -10,13 +10,7 @@ class SuperRecursiveOpenStruct
       RecursiveOpenStruct.new(hash, recurse_over_arrays: true)
     end
 
-    if @raise_on_missing_methods
-      @target.instance_eval do
-        def method_missing(method, *_args)
-          raise NoMethodError, "undefined method \`#{method}' for #{self.inspect}"
-        end
-      end
-    end
+    patch_object(@target) if @raise_on_missing_methods
   end
 
   def method_missing(method, *args, &block)
@@ -34,5 +28,23 @@ class SuperRecursiveOpenStruct
   alias_method :to_s, def inspect
     contents = @target.inspect.gsub(/\A#<RecursiveOpenStruct (.+)>\Z/, "\\1")
     "#<SuperRecursiveOpenStruct:0x#{__id__.to_s(16)} #{contents}>".freeze
+  end
+
+  private def patch_object(object)
+    return unless object.respond_to?(:each_pair)
+
+    object.each_pair do |key, _|
+      child = object.public_send(key)
+
+      if child.respond_to?(:each_pair)
+        child.instance_eval do
+          def method_missing(method, *_args)
+            raise NoMethodError, "undefined method \`#{method}' for #{self.inspect}"
+          end
+        end
+
+        patch_object(child)
+      end
+    end
   end
 end

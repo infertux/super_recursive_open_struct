@@ -14,8 +14,10 @@ describe SuperRecursiveOpenStruct do
     end
 
     it "does raise on missing methods" do
-      sros = SuperRecursiveOpenStruct.new(a: 1)
+      sros = SuperRecursiveOpenStruct.new(a: { b: { c: 1 } })
       expect { sros.baz }.to raise_error(NoMethodError)
+      expect { sros.a.baz }.to raise_error(NoMethodError)
+      expect { sros.a.b.baz }.to raise_error(NoMethodError)
     end
 
     context "with raise_on_missing_methods = false" do
