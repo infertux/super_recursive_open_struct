@@ -30,6 +30,13 @@ describe SuperRecursiveOpenStruct do
     end
   end
 
+  describe "#to_json" do
+    it "delegates to the target object" do
+      expect(SuperRecursiveOpenStruct.new({a: 1}).to_json).to eq '{"a":1}'
+      expect(SuperRecursiveOpenStruct.new([{a: 'A'}, {b: 0.1}]).to_json).to eq '[{"a":"A"},{"b":0.1}]'
+    end
+  end
+
   describe "#respond_to?" do
     it "is implemented properly with #respond_to_missing?" do
       sros = SuperRecursiveOpenStruct.new(a: 1)

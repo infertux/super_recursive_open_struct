@@ -1,4 +1,5 @@
 require "recursive_open_struct"
+require "active_support/json/encoding"
 
 class SuperRecursiveOpenStruct
   def initialize(hash, args = {})
@@ -23,6 +24,10 @@ class SuperRecursiveOpenStruct
 
   def respond_to_missing?(method, include_private = false)
     @target.respond_to?(method, include_private)
+  end
+
+  def to_json
+    ActiveSupport::JSON.encode @target
   end
 
   alias_method :to_s, def inspect
